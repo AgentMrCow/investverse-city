@@ -1,6 +1,6 @@
 import { Button, buttonVariants } from "./ui/button";
 import { TokenWallet } from "./TokenWallet";
-import { Menu, User, Settings, Trophy, Swords, BookOpen, Home, LineChart, Coins } from "lucide-react";
+import { Menu, User, Settings, Trophy, Swords, BookOpen, Home, LineChart, Coins, Gamepad2 } from "lucide-react";
 import { useState } from "react";
 import { NavLink } from "./NavLink";
 import { cn } from "@/lib/utils";
@@ -8,7 +8,8 @@ import { useQuery } from "@tanstack/react-query";
 import { fetchProfile } from "@/lib/supabaseQueries";
 
 const navItems = [
-  { icon: Home, label: "Dashboard", href: "/" },
+  { icon: Home, label: "Lobby", href: "/" },
+  { icon: Gamepad2, label: "Game", href: "/game" },
   { icon: BookOpen, label: "Learn", href: "/learn" },
   { icon: LineChart, label: "Simulations", href: "/simulations" },
   { icon: Swords, label: "Club War", href: "/club-war" },

@@ -1,6 +1,6 @@
 import { Navbar } from "@/components/Navbar";
 import { HeroSection } from "@/components/HeroSection";
-import { GameHub } from "@/components/GameHub";
+import { LobbyModeSelect } from "@/components/LobbyModeSelect";
 import { Footer } from "@/components/Footer";
 import { Button } from "@/components/ui/button";
 import { Link } from "react-router-dom";
@@ -13,10 +13,8 @@ const Index = () => {
       {/* Hero Section */}
       <HeroSection />
 
-      {/* Game Hub */}
-      <GameHub />
-
       <main className="container mx-auto px-4 py-12 space-y-12">
+        <LobbyModeSelect />
         <section className="py-6">
           <div className="text-center mb-12">
             <h2 className="font-display text-3xl md:text-4xl font-bold mb-4">

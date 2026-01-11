@@ -10,6 +10,7 @@ import Simulations from "./pages/Simulations";
 import ClubWar from "./pages/ClubWar";
 import Economy from "./pages/Economy";
 import LeaderboardPage from "./pages/LeaderboardPage";
+import GameMode from "./pages/GameMode";
 
 const queryClient = new QueryClient();
 
@@ -21,6 +22,7 @@ const App = () => (
       <BrowserRouter>
         <Routes>
           <Route path="/" element={<Index />} />
+          <Route path="/game" element={<GameMode />} />
           <Route path="/learn" element={<Learn />} />
           <Route path="/simulations" element={<Simulations />} />
           <Route path="/club-war" element={<ClubWar />} />

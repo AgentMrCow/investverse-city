@@ -4,6 +4,7 @@ import { ClubWarPreview } from "@/components/ClubWarPreview";
 import { WarStrategyBoard } from "@/components/WarStrategyBoard";
 import { GovernancePanel } from "@/components/GovernancePanel";
 import { TokenomicsPanel } from "@/components/TokenomicsPanel";
+import { ClubWarBattleLane } from "@/components/ClubWarBattleLane";
 import { GamePanel, GameStationCard } from "@/components/GamePanel";
 import { Coins, Swords, Users } from "lucide-react";
 
@@ -31,6 +32,7 @@ const ClubWar = () => {
               </p>
             </div>
             <ClubWarPreview />
+            <ClubWarBattleLane />
           </div>
 
           <div className="grid sm:grid-cols-2 lg:grid-cols-1 gap-4">

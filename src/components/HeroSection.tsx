@@ -40,10 +40,10 @@ export function HeroSection() {
 
             <div className="flex flex-wrap gap-4 animate-slide-up" style={{ animationDelay: "0.3s" }}>
               <Button variant="neon" size="xl" asChild>
-                <a href="#game-hub">
+                <Link to="/game">
                   <Play className="w-5 h-5" />
                   Enter Game
-                </a>
+                </Link>
               </Button>
               <Button variant="outline" size="xl" asChild>
                 <Link to="/learn">Start Learning</Link>
@@ -90,10 +90,10 @@ export function HeroSection() {
               </div>
 
               <Button variant="neon" size="lg" className="mt-6 w-full" asChild>
-                <a href="#game-hub">
+                <Link to="/game">
                   <Play className="w-5 h-5" />
                   Enter Game
-                </a>
+                </Link>
               </Button>
             </div>
           </div>
