@@ -1,18 +1,6 @@
 import { Navbar } from "@/components/Navbar";
 import { HeroSection } from "@/components/HeroSection";
-import { StatsOverview } from "@/components/StatsOverview";
-import { CityVisualization } from "@/components/CityVisualization";
-import { DailyChallenge } from "@/components/DailyChallenge";
-import { SkillTree } from "@/components/SkillTree";
-import { ClubWarPreview } from "@/components/ClubWarPreview";
-import { Leaderboard } from "@/components/Leaderboard";
-import { RegionPolicySwitch } from "@/components/RegionPolicySwitch";
-import { SimulationLab } from "@/components/SimulationLab";
-import { InsuranceESGPanel } from "@/components/InsuranceESGPanel";
-import { CompoundingVault } from "@/components/CompoundingVault";
-import { TokenomicsPanel } from "@/components/TokenomicsPanel";
-import { QuestionBankPanel } from "@/components/QuestionBankPanel";
-import { ArchitectureFlow } from "@/components/ArchitectureFlow";
+import { GameHub } from "@/components/GameHub";
 import { Footer } from "@/components/Footer";
 import { Button } from "@/components/ui/button";
 import { Link } from "react-router-dom";
@@ -25,65 +13,11 @@ const Index = () => {
       {/* Hero Section */}
       <HeroSection />
 
-      {/* Main Dashboard */}
-      <main className="container mx-auto px-4 py-12 space-y-8">
-        {/* Stats Overview */}
-        <section>
-          <StatsOverview />
-        </section>
+      {/* Game Hub */}
+      <GameHub />
 
-        {/* Region Policy Switch */}
-        <section>
-          <RegionPolicySwitch />
-        </section>
-
-        {/* Main Grid */}
-        <section className="grid lg:grid-cols-2 gap-8">
-          {/* City Visualization */}
-          <CityVisualization />
-          
-          {/* Daily Challenge */}
-          <DailyChallenge />
-        </section>
-
-        {/* Secondary Grid */}
-        <section className="grid lg:grid-cols-3 gap-8">
-          {/* Skill Tree - Takes 2 columns */}
-          <div className="lg:col-span-2">
-            <SkillTree />
-          </div>
-          
-          {/* Club War Preview */}
-          <ClubWarPreview />
-        </section>
-
-        {/* Leaderboard */}
-        <section>
-          <Leaderboard />
-        </section>
-
-        {/* Simulation + Protection */}
-        <section className="grid lg:grid-cols-3 gap-8">
-          <div className="lg:col-span-2">
-            <SimulationLab />
-          </div>
-          <InsuranceESGPanel />
-        </section>
-
-        {/* Compounding + Tokenomics */}
-        <section className="grid lg:grid-cols-2 gap-8">
-          <CompoundingVault />
-          <TokenomicsPanel />
-        </section>
-
-        {/* Community + Architecture */}
-        <section className="grid lg:grid-cols-2 gap-8">
-          <QuestionBankPanel />
-          <ArchitectureFlow />
-        </section>
-
-        {/* Features Section */}
-        <section className="py-12">
+      <main className="container mx-auto px-4 py-12 space-y-12">
+        <section className="py-6">
           <div className="text-center mb-12">
             <h2 className="font-display text-3xl md:text-4xl font-bold mb-4">
               The Learn-to-Earn Loop
@@ -129,7 +63,6 @@ const Index = () => {
           </div>
         </section>
 
-        {/* CTA Section */}
         <section className="glass-card p-12 text-center relative overflow-hidden">
           <div className="absolute inset-0 bg-gradient-to-r from-primary/10 via-neon-purple/10 to-accent/10" />
           <div className="relative z-10">

@@ -40,129 +40,63 @@ export function HeroSection() {
 
             <div className="flex flex-wrap gap-4 animate-slide-up" style={{ animationDelay: "0.3s" }}>
               <Button variant="neon" size="xl" asChild>
-                <Link to="/learn">
+                <a href="#game-hub">
                   <Play className="w-5 h-5" />
-                  Start Learning
-                </Link>
+                  Enter Game
+                </a>
               </Button>
               <Button variant="outline" size="xl" asChild>
+                <Link to="/learn">Start Learning</Link>
+              </Button>
+              <Button variant="ghost" size="xl" asChild>
                 <Link to="/simulations">
                   View Simulations
                   <ArrowRight className="w-5 h-5" />
                 </Link>
               </Button>
             </div>
-
-            <div className="grid sm:grid-cols-2 gap-3 animate-slide-up" style={{ animationDelay: "0.35s" }}>
-              {[
-                { icon: LineChart, label: "Simulation Lab", detail: "Stress-test portfolios with AI events." },
-                { icon: Shield, label: "Insurance Literacy", detail: "Decode policies and coverage gaps." },
-                { icon: Coins, label: "GT Economy", detail: "Non-transferable rewards + upgrades." },
-                { icon: TrendingUp, label: "Club Wars", detail: "Collaborative strategy challenges." },
-              ].map((item) => (
-                <div key={item.label} className="rounded-2xl border border-border/70 bg-card/70 px-4 py-3">
-                  <div className="flex items-center gap-2 text-sm font-semibold">
-                    <item.icon className="w-4 h-4 text-primary" />
-                    {item.label}
-                  </div>
-                  <p className="mt-2 text-xs text-muted-foreground">{item.detail}</p>
-                </div>
-              ))}
-            </div>
-
-            {/* Micro Stats */}
-            <div className="grid grid-cols-2 gap-4 pt-6 border-t border-border/60 animate-slide-up" style={{ animationDelay: "0.4s" }}>
-              {[
-                { label: "Retention uplift", value: "+38%" },
-                { label: "GT rewards issued", value: "2.0M" },
-                { label: "Concept modules", value: "120+" },
-                { label: "City assets insured", value: "82%" },
-              ].map((item) => (
-                <div key={item.label} className="rounded-xl border border-border/70 bg-card/70 px-4 py-3">
-                  <p className="text-xs uppercase tracking-wider text-muted-foreground">{item.label}</p>
-                  <p className="mt-2 text-2xl font-display font-bold">{item.value}</p>
-                </div>
-              ))}
-            </div>
           </div>
 
-          {/* Right Content - Snapshot */}
+          {/* Right Content - Game Portal */}
           <div className="space-y-6">
             <div className="glass-card p-6">
               <div className="flex items-center justify-between mb-4">
                 <div>
-                  <p className="text-xs uppercase tracking-wider text-muted-foreground">City Pulse</p>
-                  <h3 className="font-display text-xl font-semibold">Learning Command</h3>
+                  <p className="text-xs uppercase tracking-wider text-muted-foreground">Game Lobby</p>
+                  <h3 className="font-display text-xl font-semibold">Enter Investverse City</h3>
                 </div>
-                <Badge variant="secondary">Live</Badge>
+                <Badge variant="secondary">Prototype</Badge>
               </div>
+              <p className="text-sm text-muted-foreground">
+                This lobby is just the entry point. Inside the city hub, stations open as pop-up
+                panels, just like a mobile game menu.
+              </p>
 
-              <div className="grid sm:grid-cols-2 gap-4">
+              <div className="mt-6 grid gap-3">
                 {[
-                  { label: "Risk Level", value: "Balanced", tone: "text-primary" },
-                  { label: "Coverage", value: "82%", tone: "text-success" },
-                  { label: "ESG Score", value: "78", tone: "text-accent" },
-                  { label: "Club Rank", value: "#24", tone: "text-muted-foreground" },
-                ].map((stat) => (
-                  <div key={stat.label} className="rounded-xl border border-border/70 bg-card/70 px-4 py-3">
-                    <p className="text-xs text-muted-foreground uppercase tracking-wider">{stat.label}</p>
-                    <p className={`mt-2 text-lg font-display font-bold ${stat.tone}`}>{stat.value}</p>
+                  { icon: LineChart, label: "Simulation Sandbox", detail: "Run market scenarios fast." },
+                  { icon: Shield, label: "Insurance Coverage", detail: "See the math behind protection." },
+                  { icon: Coins, label: "GT Economy", detail: "Rewards stay in-app and compliant." },
+                  { icon: TrendingUp, label: "Club Wars", detail: "Coordinate strategies with your crew." },
+                ].map((item) => (
+                  <div key={item.label} className="rounded-2xl border border-border/70 bg-card/70 px-4 py-3">
+                    <div className="flex items-center gap-2 text-sm font-semibold">
+                      <item.icon className="w-4 h-4 text-primary" />
+                      {item.label}
+                    </div>
+                    <p className="mt-2 text-xs text-muted-foreground">{item.detail}</p>
                   </div>
                 ))}
               </div>
-            </div>
 
-            <div className="grid sm:grid-cols-2 gap-4">
-              <div className="glass-card p-5">
-                <div className="flex items-center gap-3 mb-3">
-                  <div className="w-10 h-10 rounded-xl bg-gradient-to-br from-accent to-warning flex items-center justify-center gold-glow">
-                    <Coins className="w-5 h-5 text-accent-foreground" />
-                  </div>
-                  <div>
-                    <p className="text-xs uppercase tracking-wider text-muted-foreground">Daily reward</p>
-                    <p className="font-display text-lg font-bold text-gradient-gold">+50 GT</p>
-                  </div>
-                </div>
-                <p className="text-sm text-muted-foreground">
-                  Complete the daily quiz to keep your streak alive.
-                </p>
-              </div>
-
-              <div className="glass-card p-5">
-                <div className="flex items-center gap-3 mb-3">
-                  <div className="w-10 h-10 rounded-xl bg-gradient-to-br from-success to-emerald-400 flex items-center justify-center">
-                    <Shield className="w-5 h-5 text-background" />
-                  </div>
-                  <div>
-                    <p className="text-xs uppercase tracking-wider text-muted-foreground">Protection</p>
-                    <p className="font-display text-lg font-bold">Protected</p>
-                  </div>
-                </div>
-                <p className="text-sm text-muted-foreground">
-                  Insurance shields city assets from volatility events.
-                </p>
-              </div>
-            </div>
-
-            <div className="glass-card p-5">
-              <div className="flex items-center justify-between mb-3">
-                <p className="text-xs uppercase tracking-wider text-muted-foreground">Simulation Alert</p>
-                <TrendingUp className="w-4 h-4 text-success" />
-              </div>
-              <p className="text-sm font-semibold">Inflation spike impacts bond holdings.</p>
-              <p className="text-sm text-muted-foreground">
-                Rebalance to reduce duration risk and protect long-term goals.
-              </p>
+              <Button variant="neon" size="lg" className="mt-6 w-full" asChild>
+                <a href="#game-hub">
+                  <Play className="w-5 h-5" />
+                  Enter Game
+                </a>
+              </Button>
             </div>
           </div>
-        </div>
-      </div>
-
-      {/* Scroll Indicator */}
-      <div className="absolute bottom-8 left-1/2 -translate-x-1/2 flex flex-col items-center gap-2 text-muted-foreground animate-bounce">
-        <span className="text-xs">Scroll to explore</span>
-        <div className="w-6 h-10 rounded-full border-2 border-muted-foreground/50 flex items-start justify-center p-1">
-          <div className="w-1.5 h-3 bg-primary rounded-full animate-pulse" />
         </div>
       </div>
     </section>
