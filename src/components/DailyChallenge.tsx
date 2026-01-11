@@ -147,7 +147,7 @@ export function DailyChallenge() {
 
         <div className="space-y-3">
           {question.options.map((option, index) => {
-            let buttonClass = "w-full justify-start text-left h-auto py-4 px-4";
+            let buttonClass = "w-full justify-start text-left h-auto py-4 px-4 whitespace-normal break-words";
             
             if (showResult) {
               if (index === question.correctAnswer) {

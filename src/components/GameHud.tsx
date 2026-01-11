@@ -2,10 +2,8 @@ import { Coins, Flame, ShieldCheck, Star } from "lucide-react";
 import { useQuery } from "@tanstack/react-query";
 
 import { fetchProfile } from "@/lib/supabaseQueries";
-import { useIsMobile } from "@/hooks/use-mobile";
 
 export function GameHud() {
-  const isMobile = useIsMobile();
   const { data: profile } = useQuery({
     queryKey: ["profile"],
     queryFn: fetchProfile,
@@ -17,76 +15,27 @@ export function GameHud() {
   const quizzes = profile?.quizzes_completed ?? 0;
   const xpProgress = Math.min(100, quizzes * 4);
 
-  if (isMobile) {
-    return (
-      <div className="game-hud-mobile">
-        <div className="hud-chip">
-          <Star className="w-3.5 h-3.5 text-accent" />
-          <span className="text-xs font-semibold">Lv {level}</span>
-        </div>
-        <div className="hud-chip">
-          <Flame className="w-3.5 h-3.5 text-destructive" />
-          <div className="flex-1">
-            <div className="h-1.5 bg-muted rounded-full overflow-hidden">
-              <div className="hud-bar-fill hud-bar-fill--warning" style={{ width: "72%" }} />
-            </div>
-          </div>
-        </div>
-        <div className="hud-chip">
-          <ShieldCheck className="w-3.5 h-3.5 text-success" />
-          <span className="text-xs font-semibold">{streak}d</span>
-        </div>
-        <div className="hud-chip">
-          <Coins className="w-3.5 h-3.5 text-accent" />
-          <span className="text-xs font-semibold">{gtBalance.toLocaleString()} GT</span>
-        </div>
-      </div>
-    );
-  }
-
   return (
     <div className="game-hud">
-      <div className="game-hud-panel">
-        <div className="flex items-center justify-between">
-          <p className="text-xs uppercase tracking-wider text-muted-foreground">Commander Level</p>
-          <Star className="w-4 h-4 text-accent" />
-        </div>
-        <div className="flex items-end gap-2 mt-2">
-          <span className="font-display text-2xl font-bold">Lv {level}</span>
-          <span className="text-xs text-muted-foreground">City XP</span>
-        </div>
-        <div className="hud-bar mt-3">
-          <div className="hud-bar-fill" style={{ width: `${xpProgress}%` }} />
+      <div className="hud-chip">
+        <Star className="w-3.5 h-3.5 text-accent" />
+        <span className="text-xs font-semibold">Lv {level}</span>
+      </div>
+      <div className="hud-chip hud-chip-bar">
+        <Flame className="w-3.5 h-3.5 text-destructive" />
+        <div className="flex-1">
+          <div className="h-1.5 bg-muted rounded-full overflow-hidden">
+            <div className="hud-bar-fill hud-bar-fill--warning" style={{ width: "72%" }} />
+          </div>
         </div>
       </div>
-
-      <div className="game-hud-panel">
-        <div className="flex items-center justify-between">
-          <p className="text-xs uppercase tracking-wider text-muted-foreground">Active Mission</p>
-          <Flame className="w-4 h-4 text-destructive" />
-        </div>
-        <p className="mt-2 text-sm font-semibold">Raise coverage to 85% this week.</p>
-        <div className="hud-bar mt-3">
-          <div className="hud-bar-fill hud-bar-fill--warning" style={{ width: "72%" }} />
-        </div>
+      <div className="hud-chip">
+        <ShieldCheck className="w-3.5 h-3.5 text-success" />
+        <span className="text-xs font-semibold">{streak}d</span>
       </div>
-
-      <div className="game-hud-panel">
-        <div className="flex items-center justify-between">
-          <p className="text-xs uppercase tracking-wider text-muted-foreground">City Resources</p>
-          <ShieldCheck className="w-4 h-4 text-success" />
-        </div>
-        <div className="mt-2 flex items-center justify-between text-sm">
-          <span className="text-muted-foreground">Streak</span>
-          <span className="font-semibold">{streak} days</span>
-        </div>
-        <div className="mt-2 flex items-center justify-between text-sm">
-          <span className="text-muted-foreground">GT Balance</span>
-          <span className="font-semibold flex items-center gap-1">
-            <Coins className="w-4 h-4 text-accent" />
-            {gtBalance.toLocaleString()}
-          </span>
-        </div>
+      <div className="hud-chip">
+        <Coins className="w-3.5 h-3.5 text-accent" />
+        <span className="text-xs font-semibold">{gtBalance.toLocaleString()} GT</span>
       </div>
     </div>
   );

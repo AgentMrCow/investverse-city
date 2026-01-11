@@ -169,18 +169,12 @@
   .game-hud {
     position: relative;
     z-index: 2;
-    @apply grid gap-3 lg:grid-cols-3 mb-4;
-  }
-
-  .game-hud-mobile {
-    @apply flex items-center gap-2;
-    background: hsl(var(--card) / 0.9);
-    border: 1px solid hsl(var(--border) / 0.7);
-    border-radius: 16px;
-    padding: 8px;
-    backdrop-filter: blur(8px);
-    width: max-content;
-    max-width: 100%;
+    display: flex;
+    flex-wrap: wrap;
+    gap: 8px;
+    align-items: center;
+    max-width: 480px;
+    margin-bottom: 4px;
   }
 
   .hud-chip {
@@ -191,11 +185,18 @@
     border-radius: 12px;
     background: hsl(var(--muted) / 0.7);
     border: 1px solid hsl(var(--border) / 0.6);
+    white-space: nowrap;
+  }
+
+  .hud-chip-bar {
+    min-width: 120px;
   }
 
   .game-hud-panel {
     @apply glass-card p-4;
     border-radius: 18px;
+    max-width: 220px;
+    word-break: break-word;
   }
 
   .game-stage {
@@ -206,10 +207,43 @@
 
   .game-overlay-hud {
     position: absolute;
-    top: 14px;
-    left: 14px;
-    width: min(36vw, 260px);
+    top: 12px;
+    left: 12px;
+    width: min(32vw, 220px);
     z-index: 3;
+  }
+
+  .game-map-wrapper {
+    position: relative;
+    overflow: auto;
+    padding-bottom: 18px;
+    border-radius: 28px;
+  }
+
+  .map-scale-layer {
+    transition: transform 0.2s ease;
+    transform-origin: center center;
+    width: max(1080px, 100%);
+  }
+
+  .map-scale-controls {
+    position: absolute;
+    top: 12px;
+    right: 12px;
+    z-index: 3;
+    display: flex;
+    gap: 8px;
+  }
+
+  .map-scale-controls button {
+    width: 32px;
+    height: 32px;
+    border-radius: 10px;
+    border: 1px solid hsl(var(--border));
+    background: hsl(var(--card) / 0.9);
+    font-weight: 700;
+    line-height: 1;
+    box-shadow: 0 10px 22px hsl(0 0% 0% / 0.14);
   }
 
   .game-overlay-actions {
@@ -223,10 +257,19 @@
 
   .game-overlay-station {
     position: absolute;
-    right: 14px;
-    bottom: 12px;
-    width: min(420px, 90vw);
-    max-height: 52vh;
+    left: 50%;
+    top: 10%;
+    transform: translateX(-50%);
+    width: min(620px, 92vw);
+    max-height: 70vh;
+    z-index: 4;
+  }
+
+  .game-station-backdrop {
+    position: absolute;
+    inset: 0;
+    background: linear-gradient(180deg, hsl(var(--background) / 0.65), hsl(var(--background) / 0.8));
+    backdrop-filter: blur(8px);
     z-index: 3;
   }
 
@@ -260,6 +303,18 @@
     box-shadow: 0 35px 90px hsl(0 0% 0% / 0.16);
   }
 
+  /* Replace finance district with a simple skyline band to avoid clutter */
+  .game-map::after {
+    content: "";
+    position: absolute;
+    inset: 0;
+    background:
+      linear-gradient(180deg, transparent 0%, hsl(var(--primary) / 0.08) 45%, hsl(var(--background)) 95%),
+      linear-gradient(90deg, hsl(var(--accent) / 0.08), transparent 40%, transparent 60%, hsl(var(--primary) / 0.08));
+    pointer-events: none;
+    z-index: 0;
+  }
+
   .game-map::before {
     content: "";
     position: absolute;
@@ -278,15 +333,6 @@
       repeating-linear-gradient(90deg, hsl(var(--accent) / 0.05) 0, hsl(var(--accent) / 0.05) 1px, transparent 1px, transparent 22px);
   }
 
-  .game-map::after {
-    content: "";
-    position: absolute;
-    inset: 0;
-    background: radial-gradient(circle at 50% 75%, hsl(var(--primary) / 0.18), transparent 55%);
-    pointer-events: none;
-    z-index: 0;
-  }
-
   @media (max-width: 768px) {
     .game-stage {
       min-height: calc(100vh - 92px);
@@ -300,7 +346,7 @@
     .game-overlay-hud {
       top: 8px;
       left: 8px;
-      width: 52vw;
+      width: 48vw;
     }
 
     .game-overlay-actions {
@@ -310,11 +356,35 @@
 
     .game-overlay-station {
       left: 50%;
-      right: auto;
       transform: translateX(-50%);
-      width: 88vw;
-      max-height: 38vh;
-      bottom: 8px;
+      width: 92vw;
+      max-height: 88vh;
+      top: auto;
+      bottom: 6px;
+    }
+
+    .game-map-wrapper {
+      padding: 0 6px 16px;
+    }
+
+    .map-scale-layer {
+      width: 100%;
+    }
+
+    .map-node {
+      padding: 4px 8px;
+      gap: 4px;
+    }
+
+    .map-node-icon {
+      width: 24px;
+      height: 24px;
+    }
+
+    .map-node-label {
+      font-size: 9px;
+      padding: 2px 5px;
+      letter-spacing: 0.09em;
     }
   }
 
@@ -344,7 +414,7 @@
       linear-gradient(135deg, var(--platform-start), var(--platform-end));
     box-shadow: 0 25px 45px hsl(0 0% 0% / 0.2);
     opacity: 0.92;
-    z-index: 1;
+    z-index: 0;
   }
 
   .iso-platform::before {
@@ -399,7 +469,7 @@
     display: grid;
     justify-items: center;
     gap: 6px;
-    padding: 8px 12px;
+    padding: 6px 10px;
     border-radius: 999px;
     background: hsl(var(--card) / 0.85);
     border: 1px solid hsl(var(--border) / 0.6);
@@ -430,8 +500,8 @@
   }
 
   .map-node-icon {
-    width: 34px;
-    height: 34px;
+    width: 28px;
+    height: 28px;
     border-radius: 12px;
     display: grid;
     place-items: center;
@@ -441,19 +511,19 @@
   }
 
   .map-node-label {
-    font-size: 11px;
+    font-size: 9.5px;
     font-weight: 600;
     text-transform: uppercase;
-    letter-spacing: 0.12em;
+    letter-spacing: 0.1em;
     color: hsl(var(--muted-foreground));
     background: hsl(var(--background) / 0.85);
-    padding: 4px 8px;
+    padding: 3px 6px;
     border-radius: 999px;
     border: 1px solid hsl(var(--border) / 0.6);
   }
 
   .map-node--active {
-    transform: translate(-50%, -50%) scale(1.05);
+    transform: translate(-50%, -50%) scale(1.03);
     box-shadow: 0 0 0 2px var(--node-color), 0 18px 30px hsl(0 0% 0% / 0.2);
   }
 
@@ -520,7 +590,19 @@
 
 @media (max-width: 768px) {
   .action-dock-actions {
-    grid-template-columns: repeat(5, minmax(56px, 1fr));
+    display: flex;
+    gap: 8px;
+    overflow-x: auto;
+    padding-bottom: 2px;
+    scrollbar-width: none;
+  }
+
+  .action-dock-actions::-webkit-scrollbar {
+    display: none;
+  }
+
+  .action-button {
+    min-width: 120px;
   }
 }
 
@@ -565,26 +647,27 @@
   .game-station-window {
     @apply glass-card;
     border-radius: 20px;
-    padding: 16px;
-    max-height: 62vh;
+    padding: 12px;
+    max-height: 70vh;
     overflow: hidden;
     display: flex;
     flex-direction: column;
     gap: 8px;
+    box-shadow: 0 28px 50px hsl(0 0% 0% / 0.28);
   }
 
   .game-station-body {
     overflow: auto;
-    max-height: 50vh;
+    max-height: 60vh;
     padding-right: 4px;
   }
 
   .game-station-window--compact {
-    max-height: 46vh;
+    max-height: 88vh;
   }
 
   .game-station-window--compact .game-station-body {
-    max-height: 36vh;
+    max-height: 76vh;
   }
 
   .lobby-mode-card {

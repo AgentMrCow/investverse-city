@@ -28,7 +28,9 @@ const GameMode = () => {
   const [activeEffect, setActiveEffect] = useState<string | null>(null);
   const [effectKey, setEffectKey] = useState(0);
   const [activeNodeId, setActiveNodeId] = useState<string | null>(null);
+  const [mapScale, setMapScale] = useState(1);
   const isMobile = useIsMobile();
+  const stationOpen = !!activeNodeId;
 
   const nodes: GameNode[] = [
     {
@@ -147,37 +149,58 @@ const GameMode = () => {
     setEffectKey((prev) => prev + 1);
   };
 
+  const zoomIn = () => setMapScale((value) => Math.min(1.4, value + 0.1));
+  const zoomOut = () => setMapScale((value) => Math.max(0.8, value - 0.1));
+
   return (
     <div className="min-h-screen bg-background">
       <Navbar />
       <main className="game-mode pt-24 pb-24">
         <div className="container mx-auto px-4">
-          <div className="game-stage">
+          <div className={`game-stage${stationOpen ? " station-open" : ""}`}>
             <h1 className="sr-only">Game Mode</h1>
             <div className="game-overlay-hud">
               <GameHud />
             </div>
-            <GameModeMap
-              nodes={nodes}
-              activeNodeId={activeNodeId}
-              onSelect={(id) => setActiveNodeId(id)}
-              activeEffect={activeEffect}
-              effectKey={effectKey}
-            />
+            <div className="game-map-wrapper">
+              <div className="map-scale-controls">
+                <button type="button" onClick={zoomOut} aria-label="Zoom out">
+                  −
+                </button>
+                <button type="button" onClick={zoomIn} aria-label="Zoom in">
+                  +
+                </button>
+              </div>
+              <div
+                className="map-scale-layer"
+                style={{ transform: `scale(${mapScale})`, transformOrigin: "center center" }}
+              >
+                <GameModeMap
+                  nodes={nodes}
+                  activeNodeId={activeNodeId}
+                  onSelect={(id) => setActiveNodeId(id)}
+                  activeEffect={activeEffect}
+                  effectKey={effectKey}
+                />
+              </div>
+            </div>
             <div className="game-overlay-actions">
               <ActionDock onAction={handleAction} lastAction={activeEffect} actionKey={effectKey} />
             </div>
             {activeNode && (
-              <div className="game-overlay-station">
-                <GameStationWindow
-                  title={activeNode.title}
-                  description={activeNode.description}
-                  onClose={() => setActiveNodeId(null)}
-                  compact={isMobile}
-                >
-                  {activeNode.panel}
-                </GameStationWindow>
-              </div>
+              <>
+                <div className="game-station-backdrop" />
+                <div className="game-overlay-station">
+                  <GameStationWindow
+                    title={activeNode.title}
+                    description={activeNode.description}
+                    onClose={() => setActiveNodeId(null)}
+                    compact={isMobile}
+                  >
+                    {activeNode.panel}
+                  </GameStationWindow>
+                </div>
+              </>
             )}
           </div>
         </div>

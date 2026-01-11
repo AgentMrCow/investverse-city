@@ -33,9 +33,9 @@ export function Navbar() {
             <div className="w-10 h-10 rounded-2xl bg-gradient-to-br from-primary to-accent flex items-center justify-center">
               <span className="font-display font-bold text-primary-foreground text-lg">IC</span>
             </div>
-            <div className="hidden sm:block">
-              <h1 className="font-display font-bold text-lg text-gradient-primary">Investverse City</h1>
-              <p className="text-xs text-muted-foreground">Learning command center</p>
+            <div className="hidden sm:block max-w-[160px] truncate">
+              <h1 className="font-display font-bold text-lg text-gradient-primary truncate">Investverse City</h1>
+              <p className="text-xs text-muted-foreground truncate">Learning command center</p>
             </div>
           </div>
 
