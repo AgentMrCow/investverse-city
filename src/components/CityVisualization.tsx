@@ -63,12 +63,12 @@ export function CityVisualization() {
         </div>
         <div className="text-right">
           <p className="text-xs text-muted-foreground uppercase tracking-wider">Total Value</p>
-          <p className="font-display text-2xl font-bold text-gradient-gold">${totalValue.toLocaleString()}</p>
+          <p className="font-display text-2xl font-bold text-gradient-gold">{totalValue.toLocaleString()} GT</p>
         </div>
       </div>
 
       {/* Isometric City Grid */}
-      <div className="relative h-64 mb-6 overflow-hidden rounded-lg bg-gradient-to-b from-background to-muted/20 grid-pattern">
+      <div className="relative h-64 mb-6 overflow-hidden rounded-2xl bg-gradient-to-b from-card to-muted/40 grid-pattern">
         <div className="absolute inset-0 flex items-end justify-center gap-4 p-4">
           {buildings.map((building: Building, index: number) => (
             <div
@@ -124,19 +124,19 @@ export function CityVisualization() {
         </div>
 
         {/* Ground */}
-        <div className="absolute bottom-0 left-0 right-0 h-8 bg-gradient-to-t from-muted to-transparent" />
+        <div className="absolute bottom-0 left-0 right-0 h-8 bg-gradient-to-t from-muted/70 to-transparent" />
       </div>
 
       {/* Building Legend */}
       <div className="grid grid-cols-2 gap-3">
         {buildings.map((building: Building) => (
-          <div key={building.id} className="flex items-center gap-3 p-2 rounded-lg bg-muted/30 hover:bg-muted/50 transition-colors cursor-pointer">
+          <div key={building.id} className="flex items-center gap-3 p-2 rounded-xl bg-muted/40 hover:bg-muted/60 transition-colors cursor-pointer">
             <div className={`w-8 h-8 rounded-lg bg-gradient-to-br ${getBuildingColor(building.type)} flex items-center justify-center text-background`}>
               {getBuildingIcon(building.type)}
             </div>
             <div className="flex-1 min-w-0">
               <p className="text-sm font-medium truncate">{building.name}</p>
-              <p className="text-xs text-muted-foreground">${building.value.toLocaleString()}</p>
+              <p className="text-xs text-muted-foreground">{building.value.toLocaleString()} GT</p>
             </div>
             <div className="flex items-center gap-1 text-xs text-success">
               <TrendingUp className="w-3 h-3" />

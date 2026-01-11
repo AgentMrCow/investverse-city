@@ -24,17 +24,17 @@ export function Navbar() {
   });
 
   return (
-    <nav className="fixed top-0 left-0 right-0 z-50 border-b border-border/50 bg-background/80 backdrop-blur-xl">
+    <nav className="fixed top-0 left-0 right-0 z-50 border-b border-border/70 bg-background/95 backdrop-blur-xl shadow-sm">
       <div className="container mx-auto px-4">
         <div className="flex items-center justify-between h-16">
           {/* Logo */}
           <div className="flex items-center gap-3">
-            <div className="w-10 h-10 rounded-xl bg-gradient-to-br from-primary to-neon-cyan flex items-center justify-center neon-glow">
+            <div className="w-10 h-10 rounded-2xl bg-gradient-to-br from-primary to-accent flex items-center justify-center">
               <span className="font-display font-bold text-primary-foreground text-lg">IC</span>
             </div>
             <div className="hidden sm:block">
               <h1 className="font-display font-bold text-lg text-gradient-primary">Investverse City</h1>
-              <p className="text-xs text-muted-foreground">Learn • Invest • Earn</p>
+              <p className="text-xs text-muted-foreground">Learning command center</p>
             </div>
           </div>
 
@@ -44,8 +44,8 @@ export function Navbar() {
               <NavLink
                 key={item.label}
                 to={item.href}
-                className={buttonVariants({ variant: "ghost" })}
-                activeClassName="bg-muted text-foreground"
+                className={cn(buttonVariants({ variant: "ghost" }), "rounded-full px-4 text-xs uppercase tracking-wide")}
+                activeClassName="bg-primary/10 text-primary"
               >
                 <item.icon className="w-4 h-4" />
                 {item.label}

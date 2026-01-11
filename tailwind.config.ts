@@ -15,8 +15,8 @@ export default {
     },
     extend: {
       fontFamily: {
-        sans: ['Inter', 'sans-serif'],
-        display: ['Orbitron', 'sans-serif'],
+        sans: ['Epilogue', 'sans-serif'],
+        display: ['Chakra Petch', 'sans-serif'],
       },
       colors: {
         border: "hsl(var(--border))",
@@ -104,7 +104,7 @@ export default {
       },
       backgroundImage: {
         "gradient-radial": "radial-gradient(var(--tw-gradient-stops))",
-        "hero-gradient": "linear-gradient(180deg, hsl(222 47% 6%) 0%, hsl(222 47% 4%) 50%, hsl(222 47% 8%) 100%)",
+        "hero-gradient": "var(--gradient-hero)",
       },
     },
   },

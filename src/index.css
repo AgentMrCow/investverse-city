@@ -2,58 +2,58 @@
 @tailwind components;
 @tailwind utilities;
 
-@import url('https://fonts.googleapis.com/css2?family=Orbitron:wght@400;500;600;700;800;900&family=Inter:wght@300;400;500;600;700&display=swap');
+@import url('https://fonts.googleapis.com/css2?family=Chakra+Petch:wght@400;500;600;700&family=Epilogue:wght@300;400;500;600;700&display=swap');
 
 @layer base {
   :root {
-    --background: 222 47% 6%;
-    --foreground: 210 40% 98%;
+    --background: 36 45% 96%;
+    --foreground: 214 22% 14%;
 
-    --card: 222 47% 9%;
-    --card-foreground: 210 40% 98%;
+    --card: 36 55% 98%;
+    --card-foreground: 214 22% 14%;
 
-    --popover: 222 47% 9%;
-    --popover-foreground: 210 40% 98%;
+    --popover: 36 55% 98%;
+    --popover-foreground: 214 22% 14%;
 
-    --primary: 174 100% 50%;
-    --primary-foreground: 222 47% 6%;
+    --primary: 178 68% 28%;
+    --primary-foreground: 36 45% 96%;
 
-    --secondary: 222 30% 15%;
-    --secondary-foreground: 210 40% 98%;
+    --secondary: 34 30% 90%;
+    --secondary-foreground: 214 22% 14%;
 
-    --muted: 222 30% 18%;
-    --muted-foreground: 215 20% 55%;
+    --muted: 34 24% 91%;
+    --muted-foreground: 214 12% 40%;
 
-    --accent: 45 100% 60%;
-    --accent-foreground: 222 47% 6%;
+    --accent: 22 92% 52%;
+    --accent-foreground: 24 26% 16%;
 
-    --destructive: 0 84% 60%;
-    --destructive-foreground: 210 40% 98%;
+    --destructive: 4 78% 52%;
+    --destructive-foreground: 36 45% 96%;
 
-    --border: 222 30% 18%;
-    --input: 222 30% 15%;
-    --ring: 174 100% 50%;
+    --border: 30 16% 82%;
+    --input: 30 18% 88%;
+    --ring: 178 68% 28%;
 
-    --radius: 0.75rem;
+    --radius: 1.1rem;
 
     /* Custom game colors */
-    --token-gold: 45 100% 60%;
-    --neon-cyan: 174 100% 50%;
-    --neon-purple: 280 100% 65%;
-    --neon-pink: 330 100% 65%;
-    --success: 142 76% 45%;
-    --warning: 38 92% 50%;
+    --token-gold: 34 92% 52%;
+    --neon-cyan: 178 68% 32%;
+    --neon-purple: 16 84% 50%;
+    --neon-pink: 32 84% 50%;
+    --success: 156 48% 32%;
+    --warning: 30 90% 52%;
 
     /* Gradients */
-    --gradient-primary: linear-gradient(135deg, hsl(174 100% 50%) 0%, hsl(200 100% 50%) 100%);
-    --gradient-gold: linear-gradient(135deg, hsl(45 100% 60%) 0%, hsl(35 100% 50%) 100%);
-    --gradient-card: linear-gradient(180deg, hsl(222 47% 11%) 0%, hsl(222 47% 8%) 100%);
-    --gradient-hero: linear-gradient(180deg, hsl(222 47% 6%) 0%, hsl(222 47% 4%) 50%, hsl(222 47% 8%) 100%);
+    --gradient-primary: linear-gradient(135deg, hsl(178 68% 28%) 0%, hsl(22 92% 52%) 100%);
+    --gradient-gold: linear-gradient(135deg, hsl(34 92% 52%) 0%, hsl(22 92% 52%) 100%);
+    --gradient-card: linear-gradient(180deg, hsl(36 55% 99%) 0%, hsl(32 30% 96%) 100%);
+    --gradient-hero: linear-gradient(120deg, hsl(38 50% 97%) 0%, hsl(44 70% 92%) 45%, hsl(184 36% 88%) 100%);
 
     /* Shadows */
-    --shadow-neon: 0 0 20px hsl(174 100% 50% / 0.3);
-    --shadow-gold: 0 0 20px hsl(45 100% 60% / 0.3);
-    --shadow-card: 0 8px 32px hsl(0 0% 0% / 0.3);
+    --shadow-neon: 0 24px 48px hsl(178 68% 28% / 0.16);
+    --shadow-gold: 0 20px 40px hsl(34 92% 52% / 0.18);
+    --shadow-card: 0 20px 50px hsl(214 22% 14% / 0.08);
   }
 
   .dark {
@@ -69,18 +69,41 @@
 
   body {
     @apply bg-background text-foreground font-sans antialiased;
-    font-family: 'Inter', sans-serif;
+    font-family: 'Epilogue', sans-serif;
+    background-image:
+      radial-gradient(circle at 12% 18%, hsl(var(--accent) / 0.12), transparent 38%),
+      radial-gradient(circle at 78% 12%, hsl(var(--primary) / 0.14), transparent 40%),
+      linear-gradient(120deg, hsl(38 50% 98%) 0%, hsl(36 35% 94%) 100%);
+    background-attachment: fixed;
   }
 
   h1, h2, h3, h4, h5, h6 {
-    font-family: 'Orbitron', sans-serif;
+    font-family: 'Chakra Petch', sans-serif;
   }
 }
 
 @layer components {
   .glass-card {
-    @apply bg-card/80 backdrop-blur-xl border border-border/50 rounded-xl;
+    position: relative;
+    background: var(--gradient-card);
+    @apply border border-border/70 rounded-2xl;
     box-shadow: var(--shadow-card);
+  }
+
+  .glass-card::before {
+    content: "";
+    position: absolute;
+    top: 0;
+    left: 1.5rem;
+    right: 1.5rem;
+    height: 2px;
+    background: linear-gradient(90deg, hsl(var(--primary)), hsl(var(--accent)));
+    opacity: 0.35;
+  }
+
+  .glass-card > * {
+    position: relative;
+    z-index: 1;
   }
 
   .neon-glow {
@@ -117,9 +140,9 @@
 
   .grid-pattern {
     background-image: 
-      linear-gradient(hsl(var(--border) / 0.3) 1px, transparent 1px),
-      linear-gradient(90deg, hsl(var(--border) / 0.3) 1px, transparent 1px);
-    background-size: 50px 50px;
+      linear-gradient(hsl(var(--primary) / 0.1) 1px, transparent 1px),
+      linear-gradient(90deg, hsl(var(--primary) / 0.1) 1px, transparent 1px);
+    background-size: 72px 72px;
   }
 }
 

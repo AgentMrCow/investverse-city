@@ -9,15 +9,15 @@ const buttonVariants = cva(
   {
     variants: {
       variant: {
-        default: "bg-primary text-primary-foreground hover:bg-primary/90 hover:shadow-[0_0_20px_hsl(var(--primary)/0.4)]",
+        default: "bg-primary text-primary-foreground shadow-sm hover:bg-primary/90 hover:shadow-[0_8px_24px_hsl(var(--primary)/0.25)]",
         destructive: "bg-destructive text-destructive-foreground hover:bg-destructive/90",
-        outline: "border border-primary/50 bg-transparent text-primary hover:bg-primary/10 hover:border-primary",
+        outline: "border border-primary/40 bg-transparent text-primary hover:bg-primary/10 hover:border-primary",
         secondary: "bg-secondary text-secondary-foreground hover:bg-secondary/80",
-        ghost: "hover:bg-muted hover:text-foreground",
+        ghost: "hover:bg-muted/70 hover:text-foreground",
         link: "text-primary underline-offset-4 hover:underline",
-        neon: "bg-gradient-to-r from-[hsl(var(--neon-cyan))] to-primary text-primary-foreground hover:shadow-[0_0_30px_hsl(var(--primary)/0.5)] hover:-translate-y-0.5",
-        gold: "bg-gradient-to-r from-accent to-[hsl(var(--warning))] text-accent-foreground hover:shadow-[0_0_30px_hsl(var(--accent)/0.5)] hover:-translate-y-0.5",
-        glass: "bg-card/50 backdrop-blur-sm border border-border/50 text-foreground hover:bg-card/80",
+        neon: "bg-gradient-to-r from-primary to-accent text-primary-foreground shadow-sm hover:shadow-[0_10px_28px_hsl(var(--primary)/0.25)] hover:-translate-y-0.5",
+        gold: "bg-gradient-to-r from-accent to-[hsl(var(--warning))] text-accent-foreground shadow-sm hover:shadow-[0_10px_24px_hsl(var(--accent)/0.25)] hover:-translate-y-0.5",
+        glass: "bg-card/80 border border-border/70 text-foreground hover:bg-card",
       },
       size: {
         default: "h-10 px-4 py-2",

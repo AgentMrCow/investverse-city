@@ -10,7 +10,7 @@ export function TokenWallet({ tokens, dailyEarned, streak }: TokenWalletProps) {
   return (
     <div className="glass-card p-4 flex items-center gap-6">
       <div className="flex items-center gap-3">
-        <div className="w-10 h-10 rounded-full bg-gradient-to-br from-accent to-warning flex items-center justify-center gold-glow">
+        <div className="w-11 h-11 rounded-2xl bg-gradient-to-br from-accent to-warning flex items-center justify-center gold-glow">
           <Coins className="w-5 h-5 text-accent-foreground" />
         </div>
         <div>

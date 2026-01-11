@@ -60,18 +60,22 @@ export function StatsOverview() {
       {stats.map((stat, index) => (
         <div
           key={stat.label}
-          className="glass-card p-4 animate-slide-up"
+          className="glass-card p-5 animate-slide-up"
           style={{ animationDelay: `${index * 0.1}s` }}
         >
-          <div className="flex items-start justify-between mb-3">
-            <div className={`w-10 h-10 rounded-xl bg-gradient-to-br ${stat.color} flex items-center justify-center`}>
+          <div className="flex items-center justify-between mb-4">
+            <div className={`w-11 h-11 rounded-2xl bg-gradient-to-br ${stat.color} flex items-center justify-center`}>
               <stat.icon className="w-5 h-5 text-background" />
             </div>
-            <span className={`text-xs font-semibold ${stat.positive ? 'text-success' : 'text-destructive'}`}>
+            <span
+              className={`text-xs font-semibold px-2 py-1 rounded-full border ${
+                stat.positive ? "text-success border-success/30 bg-success/10" : "text-destructive border-destructive/30 bg-destructive/10"
+              }`}
+            >
               {stat.change}
             </span>
           </div>
-          <p className="text-xs text-muted-foreground mb-1">{stat.label}</p>
+          <p className="text-xs text-muted-foreground uppercase tracking-wider mb-2">{stat.label}</p>
           <p className="font-display text-2xl font-bold">
             {stat.value}
             {stat.suffix && <span className="text-sm text-muted-foreground ml-1">{stat.suffix}</span>}
