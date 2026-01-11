@@ -169,12 +169,65 @@
   .game-hud {
     position: relative;
     z-index: 2;
-    @apply grid gap-4 lg:grid-cols-3 mb-8;
+    @apply grid gap-3 lg:grid-cols-3 mb-4;
+  }
+
+  .game-hud-mobile {
+    @apply flex items-center gap-2;
+    background: hsl(var(--card) / 0.9);
+    border: 1px solid hsl(var(--border) / 0.7);
+    border-radius: 16px;
+    padding: 8px;
+    backdrop-filter: blur(8px);
+    width: max-content;
+    max-width: 100%;
+  }
+
+  .hud-chip {
+    display: inline-flex;
+    align-items: center;
+    gap: 6px;
+    padding: 6px 8px;
+    border-radius: 12px;
+    background: hsl(var(--muted) / 0.7);
+    border: 1px solid hsl(var(--border) / 0.6);
   }
 
   .game-hud-panel {
     @apply glass-card p-4;
     border-radius: 18px;
+  }
+
+  .game-stage {
+    position: relative;
+    min-height: calc(100vh - 140px);
+    isolation: isolate;
+  }
+
+  .game-overlay-hud {
+    position: absolute;
+    top: 14px;
+    left: 14px;
+    width: min(36vw, 260px);
+    z-index: 3;
+  }
+
+  .game-overlay-actions {
+    position: absolute;
+    left: 50%;
+    bottom: 12px;
+    transform: translateX(-50%);
+    width: min(760px, 94vw);
+    z-index: 3;
+  }
+
+  .game-overlay-station {
+    position: absolute;
+    right: 14px;
+    bottom: 12px;
+    width: min(420px, 90vw);
+    max-height: 52vh;
+    z-index: 3;
   }
 
   .hud-bar {
@@ -219,6 +272,10 @@
     opacity: 0.6;
     pointer-events: none;
     z-index: 0;
+    background-blend-mode: soft-light;
+    background:
+      repeating-linear-gradient(0deg, hsl(var(--primary) / 0.05) 0, hsl(var(--primary) / 0.05) 1px, transparent 1px, transparent 22px),
+      repeating-linear-gradient(90deg, hsl(var(--accent) / 0.05) 0, hsl(var(--accent) / 0.05) 1px, transparent 1px, transparent 22px);
   }
 
   .game-map::after {
@@ -228,6 +285,37 @@
     background: radial-gradient(circle at 50% 75%, hsl(var(--primary) / 0.18), transparent 55%);
     pointer-events: none;
     z-index: 0;
+  }
+
+  @media (max-width: 768px) {
+    .game-stage {
+      min-height: calc(100vh - 92px);
+    }
+
+    .game-map {
+      aspect-ratio: 9 / 16;
+      min-height: 70vh;
+    }
+
+    .game-overlay-hud {
+      top: 8px;
+      left: 8px;
+      width: 52vw;
+    }
+
+    .game-overlay-actions {
+      bottom: 6px;
+      width: 90vw;
+    }
+
+    .game-overlay-station {
+      left: 50%;
+      right: auto;
+      transform: translateX(-50%);
+      width: 88vw;
+      max-height: 38vh;
+      bottom: 8px;
+    }
   }
 
   .game-map-paths {
@@ -251,7 +339,9 @@
     position: absolute;
     border-radius: 20px;
     clip-path: polygon(50% 0%, 100% 50%, 50% 100%, 0% 50%);
-    background: linear-gradient(135deg, var(--platform-start), var(--platform-end));
+    background:
+      linear-gradient(145deg, hsl(0 0% 100% / 0.08), transparent 55%),
+      linear-gradient(135deg, var(--platform-start), var(--platform-end));
     box-shadow: 0 25px 45px hsl(0 0% 0% / 0.2);
     opacity: 0.92;
     z-index: 1;
@@ -411,37 +501,36 @@
     z-index: 2;
   }
 
-  .action-dock {
-    position: absolute;
-    left: 50%;
-    bottom: 32px;
-    transform: translateX(-50%);
-    width: min(960px, 100%);
-    display: grid;
-    gap: 12px;
-    z-index: 2;
-  }
+.action-dock {
+  width: 100%;
+  display: grid;
+  gap: 10px;
+}
 
   @media (max-width: 768px) {
     .action-dock {
-      position: static;
-      transform: none;
       margin-top: 16px;
     }
   }
 
-  .action-dock-actions {
-    @apply grid gap-3;
-    grid-template-columns: repeat(auto-fit, minmax(140px, 1fr));
-  }
+.action-dock-actions {
+  @apply grid gap-2.5;
+  grid-template-columns: repeat(auto-fit, minmax(140px, 1fr));
+}
 
-  .action-button {
-    @apply glass-card;
-    border-radius: 16px;
-    padding: 12px;
-    display: flex;
-    align-items: center;
-    gap: 10px;
+@media (max-width: 768px) {
+  .action-dock-actions {
+    grid-template-columns: repeat(5, minmax(56px, 1fr));
+  }
+}
+
+.action-button {
+  @apply glass-card;
+  border-radius: 16px;
+  padding: 10px;
+  display: flex;
+  align-items: center;
+  gap: 10px;
     transition: transform 0.2s ease, box-shadow 0.2s ease;
     cursor: pointer;
   }
@@ -451,14 +540,14 @@
     box-shadow: 0 16px 30px hsl(var(--primary) / 0.18);
   }
 
-  .action-button-icon {
-    width: 36px;
-    height: 36px;
-    border-radius: 12px;
-    display: grid;
-    place-items: center;
-    color: hsl(var(--background));
-  }
+.action-button-icon {
+  width: 32px;
+  height: 32px;
+  border-radius: 12px;
+  display: grid;
+  place-items: center;
+  color: hsl(var(--background));
+}
 
   .action-dock-log {
     @apply glass-card p-4;
@@ -471,6 +560,31 @@
     border-radius: 999px;
     background: linear-gradient(90deg, hsl(var(--primary)), hsl(var(--accent)));
     animation: action-fill 1.4s ease-out forwards;
+  }
+
+  .game-station-window {
+    @apply glass-card;
+    border-radius: 20px;
+    padding: 16px;
+    max-height: 62vh;
+    overflow: hidden;
+    display: flex;
+    flex-direction: column;
+    gap: 8px;
+  }
+
+  .game-station-body {
+    overflow: auto;
+    max-height: 50vh;
+    padding-right: 4px;
+  }
+
+  .game-station-window--compact {
+    max-height: 46vh;
+  }
+
+  .game-station-window--compact .game-station-body {
+    max-height: 36vh;
   }
 
   .lobby-mode-card {
