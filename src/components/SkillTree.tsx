@@ -1,4 +1,6 @@
 import { Lock, CheckCircle2, Circle, Star } from "lucide-react";
+import { useQuery } from "@tanstack/react-query";
+import { fetchSkillsWithProgress } from "@/lib/supabaseQueries";
 
 interface Skill {
   id: string;
@@ -8,25 +10,15 @@ interface Skill {
   maxLevel: number;
   unlocked: boolean;
   completed: boolean;
-  category: "investment" | "insurance" | "web3" | "risk";
+  category: "investment" | "insurance" | "web3" | "risk" | "esg";
 }
-
-const skills: Skill[] = [
-  { id: "1", name: "Portfolio Basics", description: "Learn diversification fundamentals", level: 3, maxLevel: 3, unlocked: true, completed: true, category: "investment" },
-  { id: "2", name: "Stock Analysis", description: "Understand growth vs value stocks", level: 2, maxLevel: 5, unlocked: true, completed: false, category: "investment" },
-  { id: "3", name: "Bond Mastery", description: "Master fixed income investments", level: 0, maxLevel: 4, unlocked: true, completed: false, category: "investment" },
-  { id: "4", name: "Insurance 101", description: "Basics of risk protection", level: 2, maxLevel: 3, unlocked: true, completed: false, category: "insurance" },
-  { id: "5", name: "Health Coverage", description: "Understanding health insurance", level: 0, maxLevel: 4, unlocked: false, completed: false, category: "insurance" },
-  { id: "6", name: "Blockchain Basics", description: "Introduction to Web3", level: 1, maxLevel: 5, unlocked: true, completed: false, category: "web3" },
-  { id: "7", name: "Smart Contracts", description: "Learn contract mechanics", level: 0, maxLevel: 5, unlocked: false, completed: false, category: "web3" },
-  { id: "8", name: "Risk Assessment", description: "Evaluate investment risks", level: 1, maxLevel: 4, unlocked: true, completed: false, category: "risk" },
-];
 
 const categoryColors = {
   investment: "from-neon-cyan to-primary",
   insurance: "from-success to-emerald-400",
   web3: "from-neon-purple to-neon-pink",
   risk: "from-accent to-warning",
+  esg: "from-success to-accent",
 };
 
 const categoryLabels = {
@@ -34,10 +26,23 @@ const categoryLabels = {
   insurance: "Insurance",
   web3: "Web3",
   risk: "Risk Management",
+  esg: "ESG + Sustainability",
 };
 
 export function SkillTree() {
-  const categories = ["investment", "insurance", "web3", "risk"] as const;
+  const categories = ["investment", "insurance", "web3", "risk", "esg"] as const;
+  const { data: skills = [], isLoading } = useQuery({
+    queryKey: ["skills"],
+    queryFn: fetchSkillsWithProgress,
+  });
+
+  if (isLoading) {
+    return (
+      <div className="glass-card p-6">
+        <p className="text-sm text-muted-foreground">Loading skill progress...</p>
+      </div>
+    );
+  }
 
   return (
     <div className="glass-card p-6">

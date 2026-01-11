@@ -1,4 +1,6 @@
 import { Trophy, Medal, Award, TrendingUp } from "lucide-react";
+import { useQuery } from "@tanstack/react-query";
+import { DEMO_PROFILE_ID, fetchLeaderboardEntries, fetchProfile } from "@/lib/supabaseQueries";
 
 interface Player {
   rank: number;
@@ -8,14 +10,6 @@ interface Player {
   level: number;
   change: "up" | "down" | "same";
 }
-
-const topPlayers: Player[] = [
-  { rank: 1, name: "CryptoMaster", avatar: "🏆", tokens: 125400, level: 42, change: "same" },
-  { rank: 2, name: "InvestQueen", avatar: "👑", tokens: 118200, level: 39, change: "up" },
-  { rank: 3, name: "BlockchainPro", avatar: "⚡", tokens: 112800, level: 38, change: "down" },
-  { rank: 4, name: "FinanceGuru", avatar: "📊", tokens: 98500, level: 35, change: "up" },
-  { rank: 5, name: "TokenTrader", avatar: "💎", tokens: 87200, level: 33, change: "up" },
-];
 
 const getRankIcon = (rank: number) => {
   switch (rank) {
@@ -36,6 +30,36 @@ const getRankStyle = (rank: number) => {
 };
 
 export function Leaderboard() {
+  const { data: entries = [], isLoading } = useQuery({
+    queryKey: ["leaderboard"],
+    queryFn: fetchLeaderboardEntries,
+  });
+  const { data: profile } = useQuery({
+    queryKey: ["profile"],
+    queryFn: fetchProfile,
+  });
+
+  if (isLoading) {
+    return (
+      <div className="glass-card p-6">
+        <p className="text-sm text-muted-foreground">Loading leaderboard...</p>
+      </div>
+    );
+  }
+
+  const topPlayers: Player[] = entries
+    .filter((entry) => entry.rank && entry.rank <= 5)
+    .map((entry) => ({
+      rank: entry.rank,
+      name: entry.display_name ?? "Player",
+      avatar: entry.avatar ?? "⭐",
+      tokens: entry.tokens ?? 0,
+      level: entry.level ?? 1,
+      change: entry.change ?? "same",
+    }));
+
+  const myEntry = entries.find((entry) => entry.profile_id === DEMO_PROFILE_ID);
+
   return (
     <div className="glass-card p-6">
       <div className="flex items-center justify-between mb-6">
@@ -85,20 +109,20 @@ export function Leaderboard() {
       <div className="mt-6 pt-4 border-t border-border/50">
         <div className="flex items-center gap-4 p-3 rounded-xl bg-primary/10 border border-primary/30">
           <div className="w-8 flex justify-center">
-            <span className="text-sm font-bold text-primary">#234</span>
+            <span className="text-sm font-bold text-primary">#{myEntry?.rank ?? profile?.global_rank ?? "-"}</span>
           </div>
           
           <div className="w-10 h-10 rounded-full bg-gradient-to-br from-primary to-neon-cyan flex items-center justify-center text-primary-foreground font-bold">
-            Y
+            {profile?.avatar ?? "Y"}
           </div>
           
           <div className="flex-1">
-            <p className="font-semibold">You</p>
-            <p className="text-xs text-muted-foreground">Level 8</p>
+            <p className="font-semibold">{profile?.display_name ?? "You"}</p>
+            <p className="text-xs text-muted-foreground">Level {profile?.level ?? 1}</p>
           </div>
           
           <div className="text-right">
-            <p className="font-display font-bold text-primary">12,450</p>
+            <p className="font-display font-bold text-primary">{profile?.gt_balance?.toLocaleString() ?? 0}</p>
             <p className="text-xs text-muted-foreground">GT</p>
           </div>
           

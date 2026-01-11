@@ -1,4 +1,6 @@
 import { Building2, Factory, Landmark, TrendingUp, Shield } from "lucide-react";
+import { useQuery } from "@tanstack/react-query";
+import { fetchBuildings } from "@/lib/supabaseQueries";
 
 interface Building {
   id: string;
@@ -6,16 +8,9 @@ interface Building {
   name: string;
   level: number;
   value: number;
-  growth: number;
+  growth_rate: number;
   insured: boolean;
 }
-
-const buildings: Building[] = [
-  { id: "1", type: "tech", name: "AI Data Center", level: 3, value: 15000, growth: 12.5, insured: true },
-  { id: "2", type: "bank", name: "Finance HQ", level: 2, value: 8500, growth: 4.2, insured: true },
-  { id: "3", type: "factory", name: "Consumer Mall", level: 4, value: 22000, growth: 8.1, insured: false },
-  { id: "4", type: "infrastructure", name: "Power Grid", level: 2, value: 5000, growth: 2.8, insured: true },
-];
 
 const getBuildingIcon = (type: Building["type"]) => {
   switch (type) {
@@ -36,7 +31,28 @@ const getBuildingColor = (type: Building["type"]) => {
 };
 
 export function CityVisualization() {
-  const totalValue = buildings.reduce((sum, b) => sum + b.value, 0);
+  const { data: buildings = [], isLoading } = useQuery({
+    queryKey: ["buildings"],
+    queryFn: fetchBuildings,
+  });
+
+  if (isLoading) {
+    return (
+      <div className="glass-card p-6 h-full">
+        <p className="text-sm text-muted-foreground">Loading city assets...</p>
+      </div>
+    );
+  }
+
+  if (!buildings.length) {
+    return (
+      <div className="glass-card p-6 h-full">
+        <p className="text-sm text-muted-foreground">No buildings yet. Complete challenges to unlock your first asset.</p>
+      </div>
+    );
+  }
+
+  const totalValue = buildings.reduce((sum, b) => sum + (b.value ?? 0), 0);
 
   return (
     <div className="glass-card p-6 h-full">
@@ -54,7 +70,7 @@ export function CityVisualization() {
       {/* Isometric City Grid */}
       <div className="relative h-64 mb-6 overflow-hidden rounded-lg bg-gradient-to-b from-background to-muted/20 grid-pattern">
         <div className="absolute inset-0 flex items-end justify-center gap-4 p-4">
-          {buildings.map((building, index) => (
+          {buildings.map((building: Building, index: number) => (
             <div
               key={building.id}
               className="relative group cursor-pointer"
@@ -97,9 +113,9 @@ export function CityVisualization() {
                 <div className="glass-card p-3 text-center whitespace-nowrap">
                   <p className="font-semibold text-sm">{building.name}</p>
                   <p className="text-xs text-muted-foreground">Level {building.level}</p>
-                  <div className="flex items-center justify-center gap-1 text-success text-xs mt-1">
+                    <div className="flex items-center justify-center gap-1 text-success text-xs mt-1">
                     <TrendingUp className="w-3 h-3" />
-                    +{building.growth}%
+                    +{building.growth_rate}%
                   </div>
                 </div>
               </div>
@@ -113,7 +129,7 @@ export function CityVisualization() {
 
       {/* Building Legend */}
       <div className="grid grid-cols-2 gap-3">
-        {buildings.map((building) => (
+        {buildings.map((building: Building) => (
           <div key={building.id} className="flex items-center gap-3 p-2 rounded-lg bg-muted/30 hover:bg-muted/50 transition-colors cursor-pointer">
             <div className={`w-8 h-8 rounded-lg bg-gradient-to-br ${getBuildingColor(building.type)} flex items-center justify-center text-background`}>
               {getBuildingIcon(building.type)}
@@ -124,7 +140,7 @@ export function CityVisualization() {
             </div>
             <div className="flex items-center gap-1 text-xs text-success">
               <TrendingUp className="w-3 h-3" />
-              {building.growth}%
+              {building.growth_rate}%
             </div>
           </div>
         ))}

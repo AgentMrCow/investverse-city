@@ -1,6 +1,8 @@
-import { useState } from "react";
+import { useEffect, useMemo, useState } from "react";
 import { Button } from "./ui/button";
 import { Timer, Coins, CheckCircle2, XCircle, Sparkles } from "lucide-react";
+import { useQuery } from "@tanstack/react-query";
+import { fetchDailyChallengeQuestions } from "@/lib/supabaseQueries";
 
 interface Question {
   id: string;
@@ -11,49 +13,26 @@ interface Question {
   tokenReward: number;
 }
 
-const sampleQuestions: Question[] = [
-  {
-    id: "1",
-    question: "What is diversification in investment?",
-    options: [
-      "Putting all money in one stock",
-      "Spreading investments across different assets",
-      "Only investing in bonds",
-      "Buying gold exclusively"
-    ],
-    correctAnswer: 1,
-    difficulty: "easy",
-    tokenReward: 10,
-  },
-  {
-    id: "2",
-    question: "What does ESG stand for in investing?",
-    options: [
-      "Extra Stock Gains",
-      "Environmental, Social, Governance",
-      "Economic Strategy Guide",
-      "Equity Share Growth"
-    ],
-    correctAnswer: 1,
-    difficulty: "medium",
-    tokenReward: 20,
-  },
-  {
-    id: "3",
-    question: "What is the primary purpose of insurance?",
-    options: [
-      "To make money quickly",
-      "To protect against financial loss",
-      "To avoid taxes",
-      "To invest in stocks"
-    ],
-    correctAnswer: 1,
-    difficulty: "easy",
-    tokenReward: 10,
-  },
-];
-
 export function DailyChallenge() {
+  const { data: challengeRows = [], isLoading } = useQuery({
+    queryKey: ["daily-challenge"],
+    queryFn: fetchDailyChallengeQuestions,
+  });
+
+  const questions: Question[] = useMemo(() => {
+    return challengeRows
+      .map((row) => row.question)
+      .filter(Boolean)
+      .map((question) => ({
+        id: question.id,
+        question: question.question,
+        options: Array.isArray(question.options) ? question.options : [],
+        correctAnswer: question.correct_index,
+        difficulty: question.difficulty,
+        tokenReward: question.token_reward,
+      }));
+  }, [challengeRows]);
+
   const [currentQuestion, setCurrentQuestion] = useState(0);
   const [selectedAnswer, setSelectedAnswer] = useState<number | null>(null);
   const [showResult, setShowResult] = useState(false);
@@ -61,8 +40,8 @@ export function DailyChallenge() {
   const [tokensEarned, setTokensEarned] = useState(0);
   const [timeLeft, setTimeLeft] = useState(30);
 
-  const question = sampleQuestions[currentQuestion];
-  const isCorrect = selectedAnswer === question.correctAnswer;
+  const question = questions[currentQuestion];
+  const isCorrect = selectedAnswer === question?.correctAnswer;
 
   const handleAnswer = (index: number) => {
     if (showResult) return;
@@ -76,7 +55,7 @@ export function DailyChallenge() {
   };
 
   const nextQuestion = () => {
-    if (currentQuestion < sampleQuestions.length - 1) {
+    if (currentQuestion < questions.length - 1) {
       setCurrentQuestion(currentQuestion + 1);
       setSelectedAnswer(null);
       setShowResult(false);
@@ -84,15 +63,46 @@ export function DailyChallenge() {
     }
   };
 
+  useEffect(() => {
+    if (showResult) return;
+    if (timeLeft <= 0) {
+      setShowResult(true);
+      return;
+    }
+
+    const timer = window.setInterval(() => {
+      setTimeLeft((current) => current - 1);
+    }, 1000);
+
+    return () => window.clearInterval(timer);
+  }, [showResult, timeLeft]);
+
   const getDifficultyColor = (difficulty: Question["difficulty"]) => {
     switch (difficulty) {
       case "easy": return "text-success bg-success/10";
       case "medium": return "text-warning bg-warning/10";
       case "hard": return "text-destructive bg-destructive/10";
+      default: return "text-muted-foreground bg-muted/30";
     }
   };
 
-  const progress = ((currentQuestion + 1) / sampleQuestions.length) * 100;
+  const progress = questions.length ? ((currentQuestion + 1) / questions.length) * 100 : 0;
+
+  if (isLoading) {
+    return (
+      <div className="glass-card p-6 h-full flex flex-col">
+        <p className="text-sm text-muted-foreground">Loading daily challenge...</p>
+      </div>
+    );
+  }
+
+  if (!question) {
+    return (
+      <div className="glass-card p-6 h-full flex flex-col">
+        <p className="text-sm text-muted-foreground">No daily questions available yet.</p>
+      </div>
+    );
+  }
 
   return (
     <div className="glass-card p-6 h-full flex flex-col">
@@ -102,7 +112,7 @@ export function DailyChallenge() {
             <Sparkles className="w-5 h-5 text-primary" />
             Daily Challenge
           </h3>
-          <p className="text-sm text-muted-foreground">Question {currentQuestion + 1} of {sampleQuestions.length}</p>
+          <p className="text-sm text-muted-foreground">Question {currentQuestion + 1} of {questions.length}</p>
         </div>
         <div className="flex items-center gap-4">
           <div className="flex items-center gap-2 text-accent">
@@ -138,7 +148,6 @@ export function DailyChallenge() {
         <div className="space-y-3">
           {question.options.map((option, index) => {
             let buttonClass = "w-full justify-start text-left h-auto py-4 px-4";
-            let variant: "glass" | "default" | "destructive" = "glass";
             
             if (showResult) {
               if (index === question.correctAnswer) {
@@ -187,13 +196,17 @@ export function DailyChallenge() {
               ) : (
                 <>
                   <XCircle className="w-5 h-5" />
-                  <span className="font-semibold">Wrong answer. The correct answer was {String.fromCharCode(65 + question.correctAnswer)}.</span>
+                  <span className="font-semibold">
+                    {selectedAnswer === null
+                      ? `Time's up. The correct answer was ${String.fromCharCode(65 + question.correctAnswer)}.`
+                      : `Wrong answer. The correct answer was ${String.fromCharCode(65 + question.correctAnswer)}.`}
+                  </span>
                 </>
               )}
             </div>
           </div>
           
-          {currentQuestion < sampleQuestions.length - 1 ? (
+          {currentQuestion < questions.length - 1 ? (
             <Button variant="neon" className="w-full" onClick={nextQuestion}>
               Next Question
             </Button>
@@ -203,7 +216,7 @@ export function DailyChallenge() {
                 Challenge Complete!
               </p>
               <p className="text-muted-foreground">
-                Score: {score}/{sampleQuestions.length} • Earned: {tokensEarned} GT
+                Score: {score}/{questions.length} • Earned: {tokensEarned} GT
               </p>
             </div>
           )}

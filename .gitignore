@@ -10,7 +10,12 @@ lerna-debug.log*
 node_modules
 dist
 dist-ssr
+contracts/artifacts
+contracts/cache
+contracts/.env
+doc
 *.local
+AGENTS.md
 
 # Editor directories and files
 .vscode/*

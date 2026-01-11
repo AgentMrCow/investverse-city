@@ -1,5 +1,6 @@
 import { Button } from "./ui/button";
 import { Play, Sparkles, ArrowRight, Coins, Shield, TrendingUp } from "lucide-react";
+import { Link } from "react-router-dom";
 
 export function HeroSection() {
   return (
@@ -19,28 +20,32 @@ export function HeroSection() {
           <div className="space-y-8">
             <div className="inline-flex items-center gap-2 px-4 py-2 rounded-full bg-primary/10 border border-primary/30 text-primary animate-slide-up">
               <Sparkles className="w-4 h-4" />
-              <span className="text-sm font-semibold">Web3 Financial Literacy Game</span>
+              <span className="text-sm font-semibold">Smart Gamification for Investment + Insurance</span>
             </div>
 
             <h1 className="font-display text-5xl md:text-7xl font-bold leading-tight animate-slide-up" style={{ animationDelay: "0.1s" }}>
-              Learn Finance,
+              Investverse City:
               <br />
-              <span className="text-gradient-primary">Build Wealth</span>
+              <span className="text-gradient-primary">Learn & Build</span>
             </h1>
 
             <p className="text-xl text-muted-foreground max-w-lg animate-slide-up" style={{ animationDelay: "0.2s" }}>
-              Master investment and insurance through gamified challenges. 
-              Build your virtual city, compete in club wars, and earn tokens as you learn.
+              Master investment and insurance through personalized paths and simulations.
+              Build your virtual city, compete in club wars, and earn GT as you learn.
             </p>
 
             <div className="flex flex-wrap gap-4 animate-slide-up" style={{ animationDelay: "0.3s" }}>
-              <Button variant="neon" size="xl">
-                <Play className="w-5 h-5 mr-2" />
-                Start Playing
+              <Button variant="neon" size="xl" asChild>
+                <Link to="/learn">
+                  <Play className="w-5 h-5" />
+                  Start Learning
+                </Link>
               </Button>
-              <Button variant="outline" size="xl">
-                Watch Demo
-                <ArrowRight className="w-5 h-5 ml-2" />
+              <Button variant="outline" size="xl" asChild>
+                <Link to="/simulations">
+                  View Simulations
+                  <ArrowRight className="w-5 h-5" />
+                </Link>
               </Button>
             </div>
 

@@ -6,6 +6,16 @@ import { DailyChallenge } from "@/components/DailyChallenge";
 import { SkillTree } from "@/components/SkillTree";
 import { ClubWarPreview } from "@/components/ClubWarPreview";
 import { Leaderboard } from "@/components/Leaderboard";
+import { RegionPolicySwitch } from "@/components/RegionPolicySwitch";
+import { SimulationLab } from "@/components/SimulationLab";
+import { InsuranceESGPanel } from "@/components/InsuranceESGPanel";
+import { CompoundingVault } from "@/components/CompoundingVault";
+import { TokenomicsPanel } from "@/components/TokenomicsPanel";
+import { QuestionBankPanel } from "@/components/QuestionBankPanel";
+import { ArchitectureFlow } from "@/components/ArchitectureFlow";
+import { Footer } from "@/components/Footer";
+import { Button } from "@/components/ui/button";
+import { Link } from "react-router-dom";
 
 const Index = () => {
   return (
@@ -20,6 +30,11 @@ const Index = () => {
         {/* Stats Overview */}
         <section>
           <StatsOverview />
+        </section>
+
+        {/* Region Policy Switch */}
+        <section>
+          <RegionPolicySwitch />
         </section>
 
         {/* Main Grid */}
@@ -47,14 +62,34 @@ const Index = () => {
           <Leaderboard />
         </section>
 
+        {/* Simulation + Protection */}
+        <section className="grid lg:grid-cols-3 gap-8">
+          <div className="lg:col-span-2">
+            <SimulationLab />
+          </div>
+          <InsuranceESGPanel />
+        </section>
+
+        {/* Compounding + Tokenomics */}
+        <section className="grid lg:grid-cols-2 gap-8">
+          <CompoundingVault />
+          <TokenomicsPanel />
+        </section>
+
+        {/* Community + Architecture */}
+        <section className="grid lg:grid-cols-2 gap-8">
+          <QuestionBankPanel />
+          <ArchitectureFlow />
+        </section>
+
         {/* Features Section */}
         <section className="py-12">
           <div className="text-center mb-12">
             <h2 className="font-display text-3xl md:text-4xl font-bold mb-4">
-              How <span className="text-gradient-primary">FinGame</span> Works
+              The Learn-to-Earn Loop
             </h2>
             <p className="text-muted-foreground max-w-2xl mx-auto">
-              Master financial literacy through an immersive gaming experience
+              A step-by-step journey that turns financial knowledge into real confidence.
             </p>
           </div>
 
@@ -62,20 +97,20 @@ const Index = () => {
             {[
               {
                 step: "01",
-                title: "Learn & Quiz",
-                description: "Complete interactive modules on investment, insurance, and Web3. Answer daily challenges to test your knowledge.",
+                title: "Personalize & Learn",
+                description: "Set your region, follow a skill tree, and unlock modules on investment and insurance.",
                 gradient: "from-primary to-neon-cyan",
               },
               {
                 step: "02",
-                title: "Build Your City",
-                description: "Invest your earned tokens in virtual assets. Watch your portfolio grow as buildings in your city.",
+                title: "Simulate & Protect",
+                description: "Run market scenarios, diversify portfolios, and apply insurance to protect city assets.",
                 gradient: "from-accent to-warning",
               },
               {
                 step: "03",
-                title: "Compete & Earn",
-                description: "Join clubs, participate in wars, climb the leaderboard. The more you learn, the more you earn.",
+                title: "Compete & Grow",
+                description: "Join club wars, earn GT rewards, and reinvest through compounding vaults.",
                 gradient: "from-neon-purple to-neon-pink",
               },
             ].map((feature, index) => (
@@ -99,43 +134,25 @@ const Index = () => {
           <div className="absolute inset-0 bg-gradient-to-r from-primary/10 via-neon-purple/10 to-accent/10" />
           <div className="relative z-10">
             <h2 className="font-display text-3xl md:text-4xl font-bold mb-4">
-              Ready to Start Your Journey?
+              Join the Prototype
             </h2>
             <p className="text-muted-foreground max-w-xl mx-auto mb-8">
-              Join thousands of players learning about finance while having fun. 
-              Your financial future starts with a game.
+              Help us validate a smarter way to learn investment and insurance. 
+              Your feedback shapes the next build.
             </p>
             <div className="flex flex-wrap justify-center gap-4">
-              <button className="btn-primary">
-                Create Free Account
-              </button>
-              <button className="px-6 py-3 rounded-lg border border-border hover:bg-muted transition-colors">
-                Learn More
-              </button>
+              <Button variant="neon" asChild>
+                <Link to="/learn">Request Access</Link>
+              </Button>
+              <Button variant="outline" asChild>
+                <Link to="/simulations">Explore Simulations</Link>
+              </Button>
             </div>
           </div>
         </section>
       </main>
 
-      {/* Footer */}
-      <footer className="border-t border-border/50 py-12">
-        <div className="container mx-auto px-4">
-          <div className="flex flex-col md:flex-row items-center justify-between gap-4">
-            <div className="flex items-center gap-3">
-              <div className="w-10 h-10 rounded-xl bg-gradient-to-br from-primary to-neon-cyan flex items-center justify-center">
-                <span className="font-display font-bold text-primary-foreground">FG</span>
-              </div>
-              <div>
-                <p className="font-display font-bold">FinGame</p>
-                <p className="text-xs text-muted-foreground">Enhancing Financial Knowledge</p>
-              </div>
-            </div>
-            <p className="text-sm text-muted-foreground">
-              © 2024 FinGame. Learn • Invest • Earn
-            </p>
-          </div>
-        </div>
-      </footer>
+      <Footer />
     </div>
   );
 };
