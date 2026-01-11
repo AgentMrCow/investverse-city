@@ -68,8 +68,7 @@ export function HeroSection() {
                 <Badge variant="secondary">Prototype</Badge>
               </div>
               <p className="text-sm text-muted-foreground">
-                This lobby is just the entry point. Inside the city hub, stations open as pop-up
-                panels, just like a mobile game menu.
+                Enter the city hub to launch missions, battles, and simulations in a game-style menu.
               </p>
 
               <div className="mt-6 grid gap-3">

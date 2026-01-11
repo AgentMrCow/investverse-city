@@ -15,6 +15,9 @@ import { IntegrityMonitorPanel } from "@/components/IntegrityMonitorPanel";
 import { AIQuestionGeneratorPanel } from "@/components/AIQuestionGeneratorPanel";
 import { ModerationDeskPanel } from "@/components/ModerationDeskPanel";
 import { GamePanel, GameStationCard } from "@/components/GamePanel";
+import { PartnerInstitutionsPanel } from "@/components/PartnerInstitutionsPanel";
+import { CertificatePanel } from "@/components/CertificatePanel";
+import { StockTickerPanel } from "@/components/StockTickerPanel";
 import {
   AlertTriangle,
   BookOpen,
@@ -170,6 +173,51 @@ const Learn = () => {
               }
             >
               <PartnerCoursesPanel />
+            </GamePanel>
+
+            <GamePanel
+              title="Certificates"
+              description="Download course completions and track progress."
+              trigger={
+                <GameStationCard
+                  title="Certificates"
+                  description="Course completions and badges."
+                  icon={ShieldCheck}
+                  gradient="from-success to-emerald-400"
+                />
+              }
+            >
+              <CertificatePanel />
+            </GamePanel>
+
+            <GamePanel
+              title="Institution Partners"
+              description="B2B partners supplying finance curriculum."
+              trigger={
+                <GameStationCard
+                  title="Institution Partners"
+                  description="Banks and academies delivering modules."
+                  icon={Users}
+                  gradient="from-primary to-neon-cyan"
+                />
+              }
+            >
+              <PartnerInstitutionsPanel />
+            </GamePanel>
+
+            <GamePanel
+              title="Live Market Tile"
+              description="Fetch live stock prices to connect lessons to markets."
+              trigger={
+                <GameStationCard
+                  title="Live Market Tile"
+                  description="Real prices feed into simulations."
+                  icon={LineChart}
+                  gradient="from-accent to-warning"
+                />
+              }
+            >
+              <StockTickerPanel />
             </GamePanel>
           </div>
         </section>

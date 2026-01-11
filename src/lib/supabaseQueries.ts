@@ -11,6 +11,27 @@ const handle = <T,>(data: T | null, error: { message: string } | null) => {
   return data;
 };
 
+export async function logIntegrityEvent(payload: {
+  event_type: string;
+  severity: "Warning" | "Penalty" | "Info";
+  detail: string;
+  action?: string | null;
+  profile_id?: string;
+}) {
+  const { data, error } = await supabase
+    .from("integrity_events")
+    .insert({
+      profile_id: payload.profile_id ?? DEMO_PROFILE_ID,
+      event_type: payload.event_type,
+      severity: payload.severity,
+      detail: payload.detail,
+      action: payload.action ?? null,
+    })
+    .select("*")
+    .single();
+  return handle(data, error);
+}
+
 export async function fetchProfile(profileId = DEMO_PROFILE_ID) {
   const { data, error } = await supabase.from("profiles").select("*").eq("id", profileId).single();
   return handle(data, error);

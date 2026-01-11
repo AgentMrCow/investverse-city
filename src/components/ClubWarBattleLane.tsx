@@ -6,7 +6,11 @@ import { cn } from "@/lib/utils";
 
 const clamp = (value: number, min: number, max: number) => Math.min(max, Math.max(min, value));
 
-export function ClubWarBattleLane() {
+interface ClubWarBattleLaneProps {
+  onRequestShop?: () => void;
+}
+
+export function ClubWarBattleLane({ onRequestShop }: ClubWarBattleLaneProps) {
   const [alphaHp, setAlphaHp] = useState(100);
   const [betaHp, setBetaHp] = useState(100);
   const [combo, setCombo] = useState(0);
@@ -122,9 +126,14 @@ export function ClubWarBattleLane() {
         )}
       </div>
 
-      <p className="mt-4 text-xs text-muted-foreground">
-        Actions trigger quick FX so the battle lane feels alive during demos.
-      </p>
+      <div className="mt-4 flex flex-wrap items-center gap-3 text-xs text-muted-foreground">
+        <span>Spend GT on shields and boosts before deploying strikes.</span>
+        {onRequestShop && (
+          <Button variant="link" size="sm" className="px-0" onClick={onRequestShop}>
+            Open Shop
+          </Button>
+        )}
+      </div>
     </div>
   );
 }

@@ -12,9 +12,12 @@ import { GameStationWindow } from "@/components/GameStationWindow";
 import { InsuranceESGPanel } from "@/components/InsuranceESGPanel";
 import { Leaderboard } from "@/components/Leaderboard";
 import { Navbar } from "@/components/Navbar";
+import { PartnerInstitutionsPanel } from "@/components/PartnerInstitutionsPanel";
 import { QuestionBankPanel } from "@/components/QuestionBankPanel";
 import { RegionPolicySwitch } from "@/components/RegionPolicySwitch";
+import { ShopPanel } from "@/components/ShopPanel";
 import { SimulationLab } from "@/components/SimulationLab";
+import { StockTickerPanel } from "@/components/StockTickerPanel";
 import { SkillTree } from "@/components/SkillTree";
 import { StatsOverview } from "@/components/StatsOverview";
 import { TokenomicsPanel } from "@/components/TokenomicsPanel";
@@ -88,14 +91,14 @@ const GameMode = () => {
     {
       id: "club-war",
       title: "Club War",
-      description: "Launch strikes and coordinate club tactics.",
+      description: "Launch strikes and coordinate club tactics. Buy shields in the shop.",
       icon: Swords,
       color: "hsl(var(--destructive))",
       x: 62,
       y: 70,
       panel: (
         <div className="space-y-6">
-          <ClubWarBattleLane />
+          <ClubWarBattleLane onRequestShop={() => setActiveNodeId("shop")} />
           <WarStrategyBoard />
         </div>
       ),
@@ -124,6 +127,36 @@ const GameMode = () => {
       x: 82,
       y: 30,
       panel: <Leaderboard />,
+    },
+    {
+      id: "shop",
+      title: "Shop",
+      description: "Buy shields, hedges, and boosts with GT.",
+      icon: Coins,
+      color: "hsl(var(--accent))",
+      x: 40,
+      y: 84,
+      panel: <ShopPanel />,
+    },
+    {
+      id: "institutions",
+      title: "Institute Partners",
+      description: "B2B courses from banks and academies.",
+      icon: Users,
+      color: "hsl(var(--primary))",
+      x: 14,
+      y: 74,
+      panel: <PartnerInstitutionsPanel />,
+    },
+    {
+      id: "stocks",
+      title: "Live Market",
+      description: "Real stock prices feeding the sim lab.",
+      icon: LineChart,
+      color: "hsl(var(--neon-cyan))",
+      x: 86,
+      y: 64,
+      panel: <StockTickerPanel />,
     },
     {
       id: "community",

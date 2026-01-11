@@ -2,7 +2,8 @@ import { useEffect, useMemo, useState } from "react";
 import { Button } from "./ui/button";
 import { Timer, Coins, CheckCircle2, XCircle, Sparkles } from "lucide-react";
 import { useQuery } from "@tanstack/react-query";
-import { fetchDailyChallengeQuestions } from "@/lib/supabaseQueries";
+import { fetchDailyChallengeQuestions, logIntegrityEvent } from "@/lib/supabaseQueries";
+import { useToast } from "@/hooks/use-toast";
 
 interface Question {
   id: string;
@@ -14,6 +15,7 @@ interface Question {
 }
 
 export function DailyChallenge() {
+  const { toast } = useToast();
   const { data: challengeRows = [], isLoading } = useQuery({
     queryKey: ["daily-challenge"],
     queryFn: fetchDailyChallengeQuestions,
@@ -39,6 +41,10 @@ export function DailyChallenge() {
   const [score, setScore] = useState(0);
   const [tokensEarned, setTokensEarned] = useState(0);
   const [timeLeft, setTimeLeft] = useState(30);
+  const [warnedFocusLoss, setWarnedFocusLoss] = useState(false);
+  const [warnedIdle, setWarnedIdle] = useState(false);
+  const [warnedScreenshot, setWarnedScreenshot] = useState(false);
+  const [lastInteraction, setLastInteraction] = useState<number>(() => Date.now());
 
   const question = questions[currentQuestion];
   const isCorrect = selectedAnswer === question?.correctAnswer;
@@ -76,6 +82,86 @@ export function DailyChallenge() {
 
     return () => window.clearInterval(timer);
   }, [showResult, timeLeft]);
+
+  useEffect(() => {
+    const handleBlur = () => {
+      if (warnedFocusLoss) return;
+      setWarnedFocusLoss(true);
+      toast({
+        title: "Focus lost during timed challenge",
+        description: "Leaving the quiz can reduce rewards. Stay in the app to avoid penalties.",
+      });
+      logIntegrityEvent({
+        event_type: "Focus lost during quiz",
+        severity: "Warning",
+        detail: "User left the quiz window during a timed challenge.",
+        action: "Warned about potential penalties",
+      }).catch(() => {});
+    };
+    window.addEventListener("blur", handleBlur);
+    document.addEventListener("visibilitychange", () => {
+      if (document.visibilityState === "hidden") handleBlur();
+    });
+    return () => {
+      window.removeEventListener("blur", handleBlur);
+      document.removeEventListener("visibilitychange", () => {
+        if (document.visibilityState === "hidden") handleBlur();
+      });
+    };
+  }, [warnedFocusLoss, toast]);
+
+  useEffect(() => {
+    const updateInteraction = () => setLastInteraction(Date.now());
+    window.addEventListener("pointerdown", updateInteraction, { passive: true });
+    window.addEventListener("keydown", updateInteraction);
+    window.addEventListener("touchstart", updateInteraction, { passive: true });
+    return () => {
+      window.removeEventListener("pointerdown", updateInteraction);
+      window.removeEventListener("keydown", updateInteraction);
+      window.removeEventListener("touchstart", updateInteraction);
+    };
+  }, []);
+
+  useEffect(() => {
+    const idleCheck = window.setInterval(() => {
+      if (warnedIdle || showResult) return;
+      if (Date.now() - lastInteraction > 20000) {
+        setWarnedIdle(true);
+        toast({
+          title: "Idle warning",
+          description: "Staying active keeps your streak and rewards safe.",
+        });
+        logIntegrityEvent({
+          event_type: "Idle during quiz",
+          severity: "Warning",
+          detail: "User idle over 20s during timed challenge.",
+          action: "Warned about reduced rewards",
+        }).catch(() => {});
+      }
+    }, 3000);
+    return () => window.clearInterval(idleCheck);
+  }, [lastInteraction, warnedIdle, showResult, toast]);
+
+  useEffect(() => {
+    const handlePrintScreen = (e: KeyboardEvent) => {
+      if (warnedScreenshot) return;
+      if (e.key === "PrintScreen") {
+        setWarnedScreenshot(true);
+        toast({
+          title: "Screenshot detected",
+          description: "Screenshots during challenges can lead to GT penalties.",
+        });
+        logIntegrityEvent({
+          event_type: "Screenshot detection",
+          severity: "Warning",
+          detail: "PrintScreen pressed during timed quiz.",
+          action: "Warned about penalties",
+        }).catch(() => {});
+      }
+    };
+    window.addEventListener("keydown", handlePrintScreen);
+    return () => window.removeEventListener("keydown", handlePrintScreen);
+  }, [warnedScreenshot, toast]);
 
   const getDifficultyColor = (difficulty: Question["difficulty"]) => {
     switch (difficulty) {

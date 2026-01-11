@@ -5,6 +5,7 @@ import { MarketplacePanel } from "@/components/MarketplacePanel";
 import { CompoundingVault } from "@/components/CompoundingVault";
 import { ContractStatusPanel } from "@/components/ContractStatusPanel";
 import { GamePanel, GameStationCard } from "@/components/GamePanel";
+import { ShopPanel } from "@/components/ShopPanel";
 import { Coins, FileText, ShieldCheck, TrendingUp } from "lucide-react";
 
 const Economy = () => {
@@ -77,6 +78,21 @@ const Economy = () => {
               }
             >
               <CompoundingVault />
+            </GamePanel>
+
+            <GamePanel
+              title="Shop"
+              description="Buy shields and boosts with GT to use in wars and sims."
+              trigger={
+                <GameStationCard
+                  title="Shop"
+                  description="GT-priced shields, hedges, and boosts."
+                  icon={Coins}
+                  gradient="from-accent to-warning"
+                />
+              }
+            >
+              <ShopPanel />
             </GamePanel>
 
             <GamePanel
